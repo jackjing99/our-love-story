@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Love Story</title>
+  <style>
+    :root {
+      --bg: #fffaf7;
+      --card: #ffffff;
+      --text: #2f2926;
+      --muted: #8a7f78;
+      --accent: #c98f89;
+      --line: #eaded8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                   "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .page {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0 80px;
+    }
+
+    .hero {
+      min-height: 72vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 16px;
+    }
+
+    .eyebrow {
+      font-size: 13px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(48px, 10vw, 92px);
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .hero p {
+      max-width: 620px;
+      margin: 24px auto 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .section {
+      margin-top: 72px;
+    }
+
+    .journey-map {
+      margin: 8px 0 72px;
+      text-align: center;
+    }
+
+    .map-frame {
+      position: relative;
+    }
+
+    .journey-map img {
+      width: 100%;
+      display: block;
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 24px rgba(58, 44, 38, 0.05);
+    }
+
+    .map-pin {
+      position: absolute;
+      z-index: 2;
+      transform: translate(-50%, -100%);
+      padding: 6px 10px;
+      border: 1px solid rgba(201, 143, 137, 0.45);
+      border-radius: 999px;
+      background: rgba(255, 253, 251, 0.94);
+      color: #6e5b55;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow: 0 5px 15px rgba(58, 44, 38, 0.12);
+    }
+
+    .pin-highway { left: 15%; top: 66%; }
+    .pin-new-york { left: 88%; top: 38%; }
+    .pin-hawaii { left: 18%; top: 91%; }
+
+    .route-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .route-list span {
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .section-note {
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 28px;
+      margin: 20px 0;
+      box-shadow: 0 8px 24px rgba(58, 44, 38, 0.04);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 20px;
+    }
+
+    .memory {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .memory-number {
+      font-size: 34px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .memory h3 {
+      margin: 0 0 8px;
+      font-size: 20px;
+    }
+
+    .placeholder {
+      color: var(--muted);
+      border: 1px dashed #d9c8c1;
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #fffdfb;
+    }
+
+    .photo-box {
+      min-height: 180px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      margin-top: 16px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+    }
+
+    .memory-image {
+      width: 100%;
+      max-height: 680px;
+      object-fit: cover;
+      object-position: center;
+      border-radius: 16px;
+      display: block;
+      margin-top: 18px;
+    }
+
+    .photo-story {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .photo-story img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      border-radius: 16px;
+      display: block;
+    }
+
+    .photo-story .wide {
+      grid-column: 1 / -1;
+      height: auto;
+      max-height: 560px;
+    }
+
+    .quote {
+      font-size: 24px;
+      line-height: 1.5;
+      text-align: center;
+      padding: 44px 28px;
+    }
+
+    .video-box {
+      aspect-ratio: 16 / 9;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+
+    .future {
+      text-align: center;
+      padding: 54px 28px;
+    }
+
+    .future h2 {
+      margin: 0 0 12px;
+      font-size: 34px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 80px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 640px) {
+      .page { width: min(100% - 20px, 920px); }
+      .hero { min-height: 62vh; }
+      .memory { grid-template-columns: 1fr; gap: 8px; }
+      .card { padding: 22px; }
+      .photo-grid { grid-template-columns: 1fr; }
+      .photo-grid img { height: auto; max-height: 560px; }
+      .photo-story { grid-template-columns: 1fr; }
+      .photo-story .wide { grid-column: auto; }
+      .photo-story img { height: auto; max-height: 560px; }
+      .map-pin { padding: 4px 7px; font-size: 10px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <!-- =========================
+         1. 首页
+         ========================= -->
+    <section class="hero">
+      <div class="eyebrow">景小鸭🦆 × 李小猪🐷 · OUR STORY</div>
+      <h1>DAY 1500</h1>
+
+      <p>
+        从 2022 年 7 月 12 日，到 2026 年 8 月 19 日。<br>
+        从纳什维尔到温斯顿-塞勒姆，从洛杉矶到波士顿，再从西雅图到波士顿。<br>
+        我们走过的距离越来越远，想念却让两颗心始终靠得很近。<br>
+        1500 天听起来很久，但景小鸭和李小猪的故事，才刚刚写到这里。
+      </p>
+    </section>
+
+    <section class="journey-map" aria-label="我们的异地恋路线">
+      <div class="map-frame">
+        <img src="day1500_assets/love-distance-map.png" alt="从纳什维尔到温斯顿-塞勒姆、洛杉矶到波士顿、西雅图到波士顿的恋爱路线地图">
+        <span class="map-pin pin-highway">📍 一号公路</span>
+        <span class="map-pin pin-new-york">🗽 纽约</span>
+        <span class="map-pin pin-hawaii">🌺 夏威夷</span>
+      </div>
+      <div class="route-list">
+        <span>纳什维尔 → 温斯顿-塞勒姆</span>
+        <span>洛杉矶 → 波士顿</span>
+        <span>西雅图 → 波士顿</span>
+      </div>
+    </section>
+
+
+    <!-- =========================
+         2. 给她的一小段话
+         ========================= -->
+    <section class="section">
+      <h2 class="section-title">李欣怡🧚‍♀️</h2>
+      <div class="card">
+        <div>
+          亲爱的李小猪：
+          <br><br>
+          当你在波士顿迎来清晨的时候，西雅图也许还留着昨晚的灯光。我们之间隔着三小时时差，
+          也隔着一整片大陆，但只要想到你，我就会觉得那些距离好像也没有那么遥远。
+          <br><br>
+          这一次，我想把我们一起走过的 1500 天慢慢整理下来。它不是一份总结，
+          只是想把那些舍不得忘记的瞬间好好收藏，也想让你知道：不管我们在哪座城市，
+          你一直都在我的生活里，在我的惦记里，也在我对未来的每一个想象里。
+          <br><br>
+          —— 景小鸭
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================
+         3. 15个回忆
+         每100天一个章节
+         你可以删除、不足15个也没关系
+         ========================= -->
+    <section class="section">
+      <h2 class="section-title">1500 Days, Our Story</h2>
+
+      <div class="timeline">
+
+        <!-- ===== Memory 01 ===== -->
+        <article class="card memory">
+          <div class="memory-number">01</div>
+          <div>
+            <h3>一眼心动</h3>
+            <div>
+              2022 年 5 月 · 纳什维尔<br><br>
+              第一次看见你的照片，我才知道，原来心动真的可以发生在一瞬间。
+              你穿着一袭明艳的红裙，笑得那样甜，像是把整张照片都照亮了。
+              那一刻，远在纳什维尔的我，心跳忽然漏了一拍，好像隔着屏幕也被什么温柔而准确地击中了。
+              <br><br>
+              我忍不住把照片看了又看。那时的我还不知道，眼前这个笑容甜美的女孩，
+              以后会成为我每天想念的人，会走进我的生活，也会陪我写下这么多珍贵的故事。
+              如今回头再看，那一眼并不是故事里不起眼的开场，而是命运轻轻落下的第一笔——
+              在真正认识你之前，我的心已经先一步朝你走去了。
+            </div>
+            <div class="photo-grid">
+              <img src="day1500_assets/01-red-dress-portrait.jpeg" alt="李欣怡身穿红裙的照片">
+              <img src="day1500_assets/01-red-dress-night.jpeg" alt="李欣怡穿红裙微笑的照片">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 02 ===== -->
+        <article class="card memory">
+          <div class="memory-number">02</div>
+          <div>
+            <h3>初见</h3>
+            <div>
+              第一次在线下见到你，我才更加确定，最初的那份心动并不是偶然。
+              如今回头看那时的我们，竟然是那样青涩，连目光相遇都会慌张，
+              害羞得不知道该把手放在哪里，也不知道该怎样把心里的喜欢说得自然一些。
+              <br><br>
+              可也许喜欢本来就藏在这些笨拙里。只是刹那间一次不经意的回眸，
+              你便在我的心里悄悄种下了一颗难以忘却的种子。那一天，我们没有在手机里留下合影，
+              多少有些遗憾；可维克林间小路上的晚风、树影和夏日傍晚的光，
+              却一直清晰地留在我的记忆里。
+              <br><br>
+              后来我才明白，幸福的起点不一定要有照片作为证明。
+              那个与你并肩走过的夏夜，早已被时间珍藏——它是我这一生幸福故事真正开始的地方。
+            </div>
+            <img class="memory-image" src="day1500_assets/02-first-meeting-forest.png" alt="男孩女孩在夏日晚霞中的林间小路牵手漫步的卡通插画">
+          </div>
+        </article>
+
+        <!-- ===== Memory 03 ===== -->
+        <article class="card memory">
+          <div class="memory-number">03</div>
+          <div>
+            <h3>爱的起航</h3>
+            <div>
+              2022 年 7 月 12 日<br><br>
+              我们终于在一起啦！直到今天，当我坐在这里做这个网页，重新想起那一天，
+              心里依然会涌起和当时一样的开心与心动。原来有些幸福不会被时间冲淡，
+              反而会在一次次回望里，变得更加清晰、更加珍贵。
+              <br><br>
+              我们在摩天轮里紧紧相拥，仿佛随着它一点点升高，整个世界都安静了下来，
+              只剩下彼此的心跳；我们在海边携手，看浪花一遍遍奔向岸边，
+              也把青涩却真挚的喜欢，郑重地交到了对方手中。
+              <br><br>
+              那一天不是一段普通旅程的结束，而是属于我们的爱正式起航。
+              摩天轮上的拥抱、海风里的并肩与沙滩上的依偎，
+              一起写下了我们诗卷中最美的第一页。故事从此有了“我们”，未来也第一次有了彼此的名字。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/03-ferris-wheel.jpeg" alt="景小鸭和李小猪在摩天轮中相拥合影">
+              <img src="day1500_assets/03-beach-portrait.jpeg" alt="李小猪站在海边迎着海风">
+              <img src="day1500_assets/03-beach-together.jpeg" alt="景小鸭和李小猪依偎坐在海边">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 04 ===== -->
+        <article class="card memory">
+          <div class="memory-number">04</div>
+          <div>
+            <h3>属于我们的一号公路</h3>
+            <div>
+              2022 年 12 月 · 第一次旅行 · 一号公路<br><br>
+              我一直觉得，和喜欢的人一起开车去远方，是一件格外浪漫的事。
+              那一次，我们沿着一号公路出发，一边是无边无际的太平洋，一边是不断向后退去的山野与城镇。
+              车窗外的风景一直在变，而坐在身边的人始终是你。
+              <br><br>
+              我喜欢的不只是抵达某个目的地，更是和你一起在路上的感觉：
+              你坐在副驾驶记录沿途的风景，我们在陌生的地方认真打扮，也会回到房间敷着面膜一起搞怪。
+              那些看似不起眼的片刻，因为有你，都变成了旅途中最值得珍藏的部分。
+              <br><br>
+              当我们终于站在湛蓝的海边，身后是翻涌的浪花，眼前是望不到尽头的公路，
+              我忽然觉得，爱情大概就是这样——不必急着知道终点在哪里，只要沿途有你，
+              每一次出发都有意义，每一段路都属于我们。
+            </div>
+            <div class="photo-story">
+              <img src="day1500_assets/04-road-trip.jpeg" alt="景小鸭与李小猪沿一号公路自驾">
+              <img src="day1500_assets/04-dressed-up.jpeg" alt="景小鸭与李小猪旅行中的合影">
+              <img src="day1500_assets/04-face-masks.jpeg" alt="景小鸭与李小猪一起敷面膜搞怪">
+              <img src="day1500_assets/04-pacific-coast.jpeg" alt="景小鸭与李小猪在太平洋海岸合影">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 05 ===== -->
+        <article class="card memory">
+          <div class="memory-number">05</div>
+          <div>
+            <h3>我们一起毕业啦</h3>
+            <div>
+              2023 年 5 月 · 毕业季<br><br>
+              从年少时初见的悸动，到一起迎来大学生活的句点，我们携手走完了人生的第一个重要阶段。
+              曾经连对视都会害羞的两个人，终于穿上毕业礼服，并肩站在镜头前，
+              把一路走来的努力、成长和爱，都珍藏进了这一天。
+              <br><br>
+              那时的我们正在一点点褪去青涩，开始学习怎样面对更广阔、也更未知的世界。
+              毕业意味着告别熟悉的校园，却也意味着我们可以带着彼此给予的勇气，
+              去迎接新的城市、新的生活，以及更多属于我们的第一次。
+              <br><br>
+              很幸运，我的青春里有你，我成长的重要时刻也有你。
+              毕业不是故事的终点，而是我们共同翻开的新一页。
+              往后的路或许会更长、更复杂，但只要我们仍然愿意牵着彼此的手，
+              就能在各自奔赴未来的同时，继续坚定地携手共进。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/05-graduation-together.jpeg" alt="景小鸭和李小猪穿着毕业礼服的合影">
+              <img src="day1500_assets/05-graduate-her.jpeg" alt="李小猪的毕业纪念照">
+              <img src="day1500_assets/05-graduate-him.jpeg" alt="景小鸭的毕业纪念照">
+              <img src="day1500_assets/05-beach-her.jpeg" alt="毕业旅途中李小猪在海边的剪影">
+              <img src="day1500_assets/05-beach-him.jpeg" alt="毕业旅途中景小鸭在海边的剪影">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 06 ===== -->
+        <article class="card memory">
+          <div class="memory-number">06</div>
+          <div>
+            <h3>一周年与新的旅程</h3>
+            <div>
+              2023 年 7 月 · 一周年<br><br>
+              我们迎来了相爱的第一个周年，也站在了人生另一段旅程的起点。
+              新的一年里，我们踏上继续求学的道路，各自在新的城市里追逐梦想。
+              曾经五个小时的车程，变成了五个小时的飞行；地图上的距离被拉得更远，
+              但始终没有改变的，是我们对彼此的爱。
+              <br><br>
+              如今回头再看，那时的每一次双向奔赴都格外珍贵。
+              我们计算假期、寻找合适的航班，带着期待穿过机场和云层，
+              只为了把屏幕里的想念重新变成一个真实的拥抱。
+              相聚的时间总显得太短，可也正因为来之不易，每顿饭、每次散步，
+              甚至只是安静地待在彼此身边，都成了值得反复回味的幸福。
+              <br><br>
+              我们隔着那么远的距离，却从未真正走散。
+              因为无论生活把我们带到哪里，我们的心始终紧紧贴合。
+              一周年不是对过去的总结，而是我们郑重告诉彼此：新的旅程开始了，
+              往后的路，我们依然愿意一次又一次地向对方奔赴。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/06-sunset-silhouette.jpeg" alt="景小鸭和李小猪在夕阳前相望的剪影">
+              <img src="day1500_assets/06-anniversary-her.jpeg" alt="李小猪庆祝一周年的照片">
+              <img src="day1500_assets/06-anniversary-dessert.jpeg" alt="写有周年快乐的一周年甜点">
+              <img src="day1500_assets/06-new-school.jpeg" alt="继续求学的新旅程留影">
+              <img src="day1500_assets/06-reunion.jpeg" alt="景小鸭和李小猪重逢时的合影">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 07 ===== -->
+        <article class="card memory">
+          <div class="memory-number">07</div>
+          <div>
+            <h3>一直在路上，一直创造美好回忆</h3>
+            <div>
+              研究生时期 · 洛杉矶与更远的地方<br><br>
+              研究生的日子里，我们开始在两座城市之间，不停创造新的共同回忆。
+              你一次次跨越漫长的距离来到洛杉矶，把原本只属于我的住处，
+              一点点变成温暖、明媚，也真正有了“家”的感觉。
+              城市的灯火因为你的到来变得柔和，而忙碌生活里的每个普通夜晚，也都有了值得期待的意义。
+              <br><br>
+              后来，我们第一次一起离开美国去旅行。旅途当然不总是完美的：
+              以为护照丢失时的慌乱、四处寻找和紧急补救的狼狈，如今想起来依然惊心动魄。
+              可是在我最焦虑的时候，你始终保持冷静，陪我一步步把事情处理好。
+              你的情绪稳定就像旅途中的强心剂，让我知道，无论遇到怎样的意外，我都不是一个人在面对。
+              <br><br>
+              我们看过洛杉矶的万家灯火，也一起走向更远的海岸；有尽兴欢笑的时刻，
+              也有措手不及的插曲。谢谢你一直陪在我身边，陪我经历生活与旅途中的起起伏伏。
+              因为同行的人是你，那些顺利与不顺利最终都变成了美好回忆，
+              而我们也会继续在路上，把未来写进下一段风景里。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/07-la-night-him.jpeg" alt="从山顶远眺洛杉矶夜景">
+              <img src="day1500_assets/07-la-night-her.jpeg" alt="李小猪与洛杉矶夜景">
+              <img src="day1500_assets/07-universal.jpeg" alt="第一次旅行中的欢乐时刻">
+              <img src="day1500_assets/07-tropical-garden.jpeg" alt="李小猪在旅行中的热带花园留影">
+              <img src="day1500_assets/07-tropical-beach.jpeg" alt="李小猪在第一次出境旅行的海边">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 08 ===== -->
+        <article class="card memory">
+          <div class="memory-number">08</div>
+          <div>
+            <h3>纽约 · 两周年</h3>
+            <div>
+              2024 年 7 月 · 纽约<br><br>
+              时间过得真快，仿佛只是眨眼之间，我们就迎来了相爱的第二个周年。
+              当我们站在纽约高处俯瞰这座城市，再细细回味走过的日子，
+              才发现我们的足迹已经落在了那么多不同的地方。
+              <br><br>
+              从最初需要五小时车程才能见面的两座城，到后来跨越东西海岸的航班；
+              从一号公路的海风，到洛杉矶的夜色，再到此刻纽约辽阔的天际线，
+              每一座城市都收藏着一段只属于我们的故事。我们看过不同的风景，
+              经历过期待、离别与重逢，也在一次次并肩前行中，更加确定彼此就是想一起看世界的人。
+              <br><br>
+              两周年像是旅途中的一处观景台，让我们暂时停下来，回望来时的路，也望向更远的未来。
+              城市还会增加，地图还会继续延伸，但无论下一站在哪里，
+              我最期待的风景，始终是与你一起抵达。
+            </div>
+            <div class="photo-grid">
+              <img src="day1500_assets/08-new-york-skyline.jpeg" alt="李小猪在纽约高空观景台俯瞰城市">
+              <img src="day1500_assets/08-new-york-gallery.jpeg" alt="李小猪在纽约艺术画廊中留影">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 09 ===== -->
+        <article class="card memory">
+          <div class="memory-number">09</div>
+          <div>
+            <h3>同居生活</h3>
+            <div>
+              共同生活的日子<br><br>
+              真正生活在同一个屋檐下以后，我们才开始看见爱情最真实的模样。
+              它不只有旅行时的风景和重逢时的拥抱，也有柴米油盐里的习惯差异，
+              有疲惫时没能说出口的体谅，也有一个个看似微小、却需要认真面对的问题。
+              <br><br>
+              那段日子里，我们有过许多摩擦。最初的我们并不擅长沟通，
+              有时急着证明自己，有时把真正的感受藏在情绪后面，让同一个问题反复出现。
+              可也正是在一次次争执、冷静与和好中，我们慢慢学会了怎样倾听，
+              怎样把“你为什么不懂我”变成“我想让你知道我的感受”，
+              也学会在问题面前站到同一边，而不是把彼此当成对手。
+              <br><br>
+              如今回头看，那些不完美并没有削弱我们的感情，反而成为它最踏实的积淀。
+              同居让我们真正走进了彼此的日常，也让两颗心在理解、包容和共同成长中贴得更近。
+              我想，这段时间真正带给我们的，是一种比心动更深的连接：
+              不只是喜欢彼此最好的一面，也愿意接住彼此的脆弱，在起起伏伏中仍然选择一起生活、一起向前。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/09-home-plushies.jpeg" alt="景小鸭和李小猪在家中与玩偶们的合影">
+              <img src="day1500_assets/09-city-autumn.jpeg" alt="景小鸭和李小猪在秋日城市中的合影">
+              <img src="day1500_assets/09-home-night.jpeg" alt="景小鸭和李小猪在共同生活中的夜晚合影">
+              <img src="day1500_assets/09-horseback.jpeg" alt="景小鸭和李小猪一起骑马旅行">
+              <img src="day1500_assets/09-beach-sunset.jpeg" alt="景小鸭和李小猪在海边夕阳中的合影">
+              <img class="wide" src="day1500_assets/09-hawaii-beach.jpeg" alt="景小鸭和李小猪在海岛沙滩的合影">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 10 ===== -->
+        <article class="card memory">
+          <div class="memory-number">10</div>
+          <div>
+            <h3>三年到四年 · 在距离中成为更好的我们</h3>
+            <div>
+              2025 年 7 月 — 2026 年 8 月 · 从三周年走向四周年<br><br>
+              从三周年走向四周年，是我们故事里一个很重要的阶段。走过第三个纪念日之后，
+              我们又重新回到了远距离恋爱的生活。西雅图与波士顿横跨整片大陆，
+              时差、忙碌和无法及时陪伴的遗憾，也给我们带来了许多新的摩擦。
+              <br><br>
+              这一阶段的我们走得并不总是轻松。三年到四年之间有许多 ups and downs，
+              有想念积累成委屈的时候，也有隔着屏幕难以把感受说清楚的夜晚。
+              可如今再回头看，我却由衷感谢这段时间给予我们的磨练。
+              它让我们重新学习如何在距离中表达爱，如何在情绪之外看见彼此真正的需要，
+              也让我们明白，一段长久的感情不是从不摇晃，而是在摇晃之后仍愿意牵紧对方。
+              <br><br>
+              这一年，我们第一次和我的爸爸妈妈一起旅行，也第一次和你的爸爸妈妈一起旅行。
+              在这些共同经历里，我们不只更加了解彼此，也开始真正走近对方的家庭、成长环境与牵挂。
+              爱不再只是两个人之间的心动，也慢慢延伸成对彼此生活、家人和未来的理解与珍惜。
+              <br><br>
+              站在第 1500 天回望过去，我感谢这一段路上的每一个白天与夜晚。
+              感谢顺境让我们快乐，也感谢坎坷让我们成长。正是那些并不完美的时刻，
+              一点点成就了今天更懂得沟通、更懂得包容，也更加坚定的我们。
+            </div>
+            <div class="photo-story">
+              <img class="wide" src="day1500_assets/10-lakeside.jpeg" alt="李小猪在秋日湖边旅行的照片">
+              <img src="day1500_assets/10-road-together.jpeg" alt="景小鸭和李小猪一起出行的车内合影">
+              <img src="day1500_assets/10-coffee.jpeg" alt="李小猪在咖啡馆的日常照片">
+            </div>
+          </div>
+        </article>
+
+        <!-- ===== Memory 15 ===== -->
+        <article class="card memory">
+          <div class="memory-number">15</div>
+          <div>
+            <h3>最终章 · 四年之后，新的开始</h3>
+            <div>
+              2026 年 8 月 19 日 · 西雅图 / 波士顿<br><br>
+              四年过去，我们一起走过了年少时的心动、一次次跨越城市的奔赴，
+              也经历了生活里的磨合、距离带来的考验，以及每一次重新靠近彼此的选择。
+              如今的我们，已经不再只是故事开始时那两个青涩的人，而是带着共同记忆、理解与承诺，
+              走进了属于我们的新阶段。
+              <br><br>
+              我相信，往后的日子会越来越好。不是因为未来不会再有困难，
+              而是因为我们已经学会怎样在风雨里站到彼此身边，怎样把分歧变成理解，
+              又怎样在漫长的等待之后，依然坚定地走向对方。
+              <br><br>
+              这个网站收藏了我们的心动、旅行、成长、眼泪和笑容，
+              也凝结着我想对你说却无法一次说完的爱。它是四年时光留下的纪念，
+              是我们爱情共同孕育出的结晶，也是一封写给过去、现在与未来的长信。
+              <br><br>
+              李小猪，Day 1500 快乐。这不是故事的结束，只是我们把旧章节温柔合上，
+              再牵着手，一起写下更好的下一页。
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         7. 写给未来
+         ========================= -->
+    <section class="section">
+      <div class="card future">
+        <div class="eyebrow">NEXT CHAPTER</div>
+        <h2>See You at Day 3000.</h2>
+        <div>
+          希望到了第 3000 天，我们已经在西雅图安定下来，拥有了真正属于我们的家。
+          清晨一起醒来，傍晚一起吃饭，在熟悉的灯光下分享一天里大大小小的事情；
+          周末去喜欢的地方散步，把鲜花、玩偶、照片和笑声一点点装进我们的房间。
+          <br><br>
+          我期待的未来并不需要多么轰轰烈烈，只希望我们可以结束漫长的距离，
+          把曾经隔着屏幕说的早安和晚安，变成每一天触手可及的陪伴。
+          愿第 3000 天的景小鸭和李小猪，正在西雅图过着甜甜的小家生活，
+          依然彼此喜欢、彼此理解，也依然会为生活里最平凡的小幸福而心动。
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      Made for Day 1500 · 景小鸭🦆 × 李小猪🐷
+    </footer>
+
+  </main>
+</body>
+</html>
